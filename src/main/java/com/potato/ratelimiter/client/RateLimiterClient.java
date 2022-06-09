@@ -2,7 +2,6 @@ package com.potato.ratelimiter.client;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;
 
@@ -23,7 +22,7 @@ public class RateLimiterClient {
 
     public boolean tryAcquire(String key, int maxRate) {
         try {
-            return stringRedisTemplate.execute(rateLimiterClientLua, Collections.singletonList(key), String.valueOf(System.currentTimeMillis()), String.valueOf(maxRate));
+            return stringRedisTemplate.execute(rateLimiterClientLua, Collections.singletonList(key), String.valueOf(System.currentTimeMillis()), String.valueOf(maxRate), String.valueOf(1));
         } catch (Exception e) {
             logger.error("execute key failed", e);
         }

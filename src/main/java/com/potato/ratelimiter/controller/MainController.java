@@ -13,7 +13,7 @@ public class MainController {
 
     @GetMapping
     public String getStatus(){
-        if(rateLimiterClient.tryAcquire("ok", 1)){
+        if(rateLimiterClient.tryAcquire("ketty", 5)){
             return "success\n";
         }
         return "false\n";
