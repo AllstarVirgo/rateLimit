@@ -3,7 +3,7 @@ local halfDayTimeSeconds = 12 * 60 * 60
 --计算在特定时间间隔内需要添加多少个令牌
 local function getAddTokenCount(interval, maxRate)
     local tokenNumberPerMilliseconds = 1000 / maxRate;
-    return interval / tokenNumberPerMilliseconds;
+    return math.floor(interval / tokenNumberPerMilliseconds);
 end
 
 --key 唯一标识
@@ -25,9 +25,9 @@ local function tryAcquire(key, currentTimeMillis, maxRate, requestTokenNumber)
         redis.pcall("expire", key, halfDayTimeSeconds)
     end
     local interval = currentTimeMillis - lastAccess
-    local addToken = getAddTokenCount(interval, maxRate)
-    if addToken > 0 then
-        currentTokenCount = currentTokenCount + addToken
+    local addTokenNumberOfInterval = getAddTokenCount(interval, maxRate)
+    if addTokenNumberOfInterval > 0 then
+        currentTokenCount = currentTokenCount + addTokenNumberOfInterval
     end
 
     if currentTokenCount >= maxRate then
