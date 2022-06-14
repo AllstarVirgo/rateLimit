@@ -23,7 +23,7 @@ public class RateLimiterClient {
 
     public ArrayList tryAcquire(String key, int maxRate) {
         try {
-            return stringRedisTemplate.execute(rateLimiterClientLua, Collections.singletonList(key), String.valueOf(System.currentTimeMillis()), String.valueOf(maxRate), String.valueOf(1), "m",String.valueOf(10));
+            return stringRedisTemplate.execute(rateLimiterClientLua, Collections.singletonList(key), String.valueOf(System.currentTimeMillis()), String.valueOf(maxRate), String.valueOf(1), "s",String.valueOf(10));
         } catch (Exception e) {
             logger.error("execute key failed", e);
         }

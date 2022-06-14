@@ -13,7 +13,7 @@ public class MainController {
 
     @GetMapping
     public String getStatus(){
-        long code = (long)(rateLimiterClient.tryAcquire("ketty5", 5).get(0));
+        long code = (long)(rateLimiterClient.tryAcquire("ketty7", 5).get(0));
         if(code == 200){
             return "success\n";
         }

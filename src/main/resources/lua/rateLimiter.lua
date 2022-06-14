@@ -47,6 +47,16 @@ local function invalidExpireTimeAndTimeUnit(timeUnit, expireTimeBySeconds)
     return false
 end
 
+local function invalidRequestTokenNumber(requestTokenNumber)
+    if requestTokenNumber == nil then
+        return true
+    end
+    if type(requestTokenNumber) ~= "number" then
+        return true
+    end
+    return requestTokenNumber <= 0
+end
+
 --key 唯一标识
 --currentTimeMillis 当前时间戳
 --maxRate 限制速率
@@ -69,7 +79,7 @@ local function tryAcquire(key, currentTimeMillis, maxRate, requestTokenNumber, t
         redis.pcall("expire", key, expireTimeBySeconds)
     end
     --参数校验
-    if currentTimeMillis < lastAccess or invalidExpireTimeAndTimeUnit(timeUnit, expireTimeBySeconds) then
+    if currentTimeMillis < lastAccess or invalidExpireTimeAndTimeUnit(timeUnit, expireTimeBySeconds) or invalidRequestTokenNumber(requestTokenNumber) then
         redis.pcall("del", key)
         return { badRequest, currentTokenCount }
     end
