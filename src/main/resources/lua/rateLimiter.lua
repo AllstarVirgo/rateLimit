@@ -53,7 +53,7 @@ end
 --timeUnit 限制速率的时间单位 支持 s(seconds) m(minute) h(hour) d(day)
 --requestTokenNumber  请求的令牌数
 --expireTimeBySeconds 过期时间
---返回布尔值,true表示可以拿到令牌，false表示不能拿到令牌
+--返回table, 第1个值是状态码，第2个值是桶内当前的令牌数
 local function tryAcquire(key, currentTimeMillis, maxRate, requestTokenNumber, timeUnit, expireTimeBySeconds)
     currentTimeMillis = tonumber(currentTimeMillis)
     maxRate = tonumber(maxRate)
