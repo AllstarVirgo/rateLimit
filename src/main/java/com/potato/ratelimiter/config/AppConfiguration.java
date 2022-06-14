@@ -11,6 +11,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 
+import java.util.ArrayList;
+
 @Configuration
 @AutoConfigureBefore(RedisAutoConfiguration.class)
 public class AppConfiguration {
@@ -40,9 +42,9 @@ public class AppConfiguration {
 
     @Bean
     public RateLimiterClient rateLimiterClient(){
-        DefaultRedisScript<Boolean> redisScript = new DefaultRedisScript<>();
+        DefaultRedisScript<ArrayList> redisScript = new DefaultRedisScript<>();
         redisScript.setLocation(new ClassPathResource("lua/rateLimiter.lua"));
-        redisScript.setResultType(Boolean.class);
+        redisScript.setResultType(ArrayList.class);
         return new RateLimiterClient(stringRedisTemplate(), redisScript);
     }
 

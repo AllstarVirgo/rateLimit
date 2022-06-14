@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 public class RateLimiterClient {
@@ -13,20 +14,20 @@ public class RateLimiterClient {
 
     private final StringRedisTemplate stringRedisTemplate;
 
-    private final RedisScript<Boolean> rateLimiterClientLua;
+    private final RedisScript<ArrayList> rateLimiterClientLua;
 
-    public RateLimiterClient(StringRedisTemplate stringRedisTemplate, RedisScript<Boolean> rateLimiterClientLua) {
+    public RateLimiterClient(StringRedisTemplate stringRedisTemplate, RedisScript<ArrayList> rateLimiterClientLua) {
         this.stringRedisTemplate = stringRedisTemplate;
         this.rateLimiterClientLua = rateLimiterClientLua;
     }
 
-    public boolean tryAcquire(String key, int maxRate) {
+    public ArrayList tryAcquire(String key, int maxRate) {
         try {
-            return stringRedisTemplate.execute(rateLimiterClientLua, Collections.singletonList(key), String.valueOf(System.currentTimeMillis()), String.valueOf(maxRate), String.valueOf(1));
+            return stringRedisTemplate.execute(rateLimiterClientLua, Collections.singletonList(key), String.valueOf(System.currentTimeMillis()), String.valueOf(maxRate), String.valueOf(1), "m",String.valueOf(10));
         } catch (Exception e) {
             logger.error("execute key failed", e);
         }
-        return false;
+        return new ArrayList();
     }
 
 }
