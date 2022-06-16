@@ -1,4 +1,10 @@
-# rateLimit
+# description
+
+This rate limiter is implemented base on token-bucket.
+Rate can be limited by second, minute, hour and day.
+Related technology is java,lua and redis.
+
+# rateLimiter
 
 令牌桶限流算法java + redis的实现
 
